@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{/thymeleaf/layouts/layout}">
+<head>
+<meta charset="UTF-8">
+<title>회원가입</title>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+<style type="text/css">
+	.content{
+		margin-bottom:150px;
+		margin-top:150px;
+		margin-left:300px;
+		margin-right:300px;
+	}
+
+	input+span{
+		color:red;
+		font-size:10px;
+	}
+</style>
+<script type="text/javascript">
+	$(function(){
+		$("#id").on("keyup",function(){
+			var id=$(this).val();
+			$.ajax({
+				url:"/user/idChk",
+				method:"get",
+				dataType:"json",
+				async:false,
+				data:{"id":id},
+				success:function(data){
+					if(data.id!=null){
+						$("#idChk").text("사용할 수 없는 아이디");
+					}else{
+						$("#idChk").text("사용가능한 아이디");
+					}
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		});
+	});
+</script>
+
+</head>
+<body>
+<div layout:fragment="content">
+<h1>회원가입</h1>
+<form action="/user/addUser" method="post" th:object="${addUserCommand}">
+<table class="table">
+	<tr>
+		<th>아이디:</th>
+		<td><input type="text" class="form-control" name="id" id="id" th:field="*{id}"/>
+			<span id="idChk"></span>
+			<span th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></span>
+		</td>
+	</tr>
+	<tr>
+		<th>이름:</th>
+		<td><input type="text" name="name" th:field="*{name}"/>
+		<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+		</td>
+	</tr>
+	<tr>
+		<th>비밀번호:</th>
+		<td><input type="password" name="password" th:field="*{password}"/>
+		<span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+		</td>
+	</tr>
+	<tr>
+		<th>이메일:</th>
+		<td><input type="email" name="email" th:field="*{email}"/>
+		<span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+		</td>
+	</tr>
+	<tr>
+		<th>주소:</th>
+		<td><input type="text" name="address" th:field="*{address}"/>
+		<span th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span>
+		</td>
+	</tr>
+	<tr>
+		<td><input type="submit" value="가입" class="btn"/></td>
+	</tr>
+</table>
+</form>
+</div>
+</body>
+
+</html>

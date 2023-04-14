@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{/thymeleaf/layouts/layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+	.content{
+		margin-bottom:150px;
+		margin-top:150px;
+		margin-left:300px;
+		margin-right:300px;
+	}
+
+	input+span{
+		color:red;
+		font-size:10px;
+	}
+</style>
+</head>
+<body>
+<div layout:fragment="content">
+	<h1>LOGIN</h1>
+	<form th:action="@{/user/login}" method="post" th:object="${loginCommand}">
+		<table class="table">
+			<tr>
+				<td>아이디:</td>
+				<td><input type="text" class="form-control" name="id" th:field="*{id}"/>
+					<span th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>비밀번호:</td>
+				<td><input type="password" class="form-control" name="password" th:field="*{password}"/>
+					<span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2"><input type="submit" value="로그인" class="btn"></td>
+			</tr>
+		</table>
+	</form>
+</div>
+</body>
+</html>
